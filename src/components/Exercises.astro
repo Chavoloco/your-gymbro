@@ -1,0 +1,170 @@
+---
+interface Props {
+  muscle: string;
+}
+
+const { muscle } = Astro.props;
+---
+
+<style>
+  .exerciseList {
+    padding: 0;
+    list-style-type: none;
+  }
+  .exerciseElement {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  .exercises-card {
+    list-style: none;
+    padding: 10px;
+    background-color: #194ec7;
+    background-image: none;
+    background-size: 400%;
+    border-radius: 7px;
+    background-position: 100%;
+    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    max-width: 49rem;
+    min-height: 30rem;
+    margin-top: 45px;
+  }
+  .link-card > a {
+    width: 100%;
+    text-decoration: none;
+    line-height: 1.4;
+    padding: calc(1.5rem - 1px);
+    border-radius: 8px;
+    color: white;
+    background-color: #23262d;
+    opacity: 0.8;
+  }
+  h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    text-align: center;
+    font-weight: bolder;
+    color: #ddd;
+  }
+  p {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .link-card:is(:hover, :focus-within) {
+    background-position: 0;
+    background-image: var(--accent-gradient);
+  }
+  .link-card:is(:hover, :focus-within) h2 {
+    color: rgb(var(--accent-light));
+  }
+  .row {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
+
+<div class="row">
+  <li class="exercises-card">
+    <h2 id="muscle">{muscle.toLocaleUpperCase()}</h2>
+    <ol id="exerciseList" class="exerciseList"></ol>
+  </li>
+</div>
+
+<script>
+  async function callMuscleExercise(): Promise<void> {
+    const muscle = document.getElementById("muscle")?.textContent;
+
+    if (muscle === "LEGS") {
+      const legsMuscle = [
+        "adductors",
+        "calves",
+        "quadriceps",
+        "hamstrings",
+        "glutes",
+      ];
+      const muscles = [];
+      for (let i = 0; i < legsMuscle.length; i++) {
+        const e = await getResponse(legsMuscle[i]);
+        muscles.push(e.slice(0, 2));
+      }
+      const response = [].concat(...muscles);
+      renderExercises(response);
+    } else if (muscle === "BACK") {
+      const backMuscle = ["lats", "lower_back", "middle_back", "traps"];
+      const muscles = [];
+      for (let i = 0; i < backMuscle.length; i++) {
+        const e = await getResponse(backMuscle[i]);
+        muscles.push(e.slice(0, 3));
+      }
+      const response = [].concat(...muscles);
+      renderExercises(response);
+    } else if (muscle === "BICEPS") {
+      const bicepMuscle = ["biceps", "triceps", "forearms"];
+      const muscles = [];
+      for (let i = 0; i < bicepMuscle.length; i++) {
+        const e = await getResponse(bicepMuscle[i]);
+        muscles.push(e.slice(0, 4));
+      }
+      const response = [].concat(...muscles);
+      renderExercises(response);
+    } else {
+      if (muscle) {
+        const response = await getResponse(muscle);
+        renderExercises(response);
+      } else {
+        throw new Error("no muscle");
+      }
+    }
+
+    async function getResponse(m: string) {
+      const response = await fetch(
+        `https://api.api-ninjas.com/v1/exercises?muscle=${m}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Api-Key": "H+wwoPjTxZIaR+Bi2UrG+Q==Wv1jeUZLYy2lY6ym",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    }
+  }
+
+  function renderExercises(exercises: { name: string }[]): void {
+    const exerciseList = document.getElementById("exerciseList");
+
+    if (exerciseList) {
+      exerciseList.innerHTML = "";
+    }
+
+    exercises.forEach((e) => {
+      const exerciseElement = document.createElement("li");
+      exerciseElement.textContent = e.name;
+      //exerciseElement.classList.add("exerciseElement");
+      exerciseElement.style.border = "1px solid #ddd";
+      exerciseElement.style.borderRadius = "5px";
+      exerciseElement.style.padding = "10px";
+      exerciseElement.style.marginBottom = "10px";
+      exerciseElement.style.backgroundColor = "#f9f9f9";
+      exerciseElement.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
+      exerciseElement.style.fontWeight = "bold";
+      exerciseList?.appendChild(exerciseElement);
+    });
+  }
+  document.body.onload = callMuscleExercise;
+</script>
