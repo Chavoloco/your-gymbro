@@ -39,13 +39,13 @@ import Card from "../components/Card.astro";
     <h1>Your Gym<span class="text-gradient">Bro</span></h1>
     <h2 class="instructions">What are you training today?</h2>
     <ul role="list" class="link-card-grid">
-      <Card href="https://your-gymbro.netlify.app/chest" title="Pecho" />
+      <Card href=`${import.meta.env.PUBLIC_BASE_URL}/chest` title="Pecho" />
       <Card
-        href="https://your-gymbro.netlify.app/biceps"
+        href=`${import.meta.env.PUBLIC_BASE_URL}/biceps`
         title="Tricpes y Biceps"
       />
-      <Card href="https://your-gymbro.netlify.app/back" title="Espalda" />
-      <Card href="https://your-gymbro.netlify.app/legs" title="Piernas" />
+      <Card href=`${import.meta.env.PUBLIC_BASE_URL}/back` title="Espalda" />
+      <Card href=`${import.meta.env.PUBLIC_BASE_URL}/legs` title="Piernas" />
     </ul>
   </main>
 </Layout>
