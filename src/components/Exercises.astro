@@ -128,11 +128,11 @@ const { muscle } = Astro.props;
   }
 
   async function getResponse(m: string) {
-    return fetch(`https://api.api-ninjas.com/v1/exercises?muscle=${m}`, {
+    return fetch(`${import.meta.env.PUBLIC_API_URL}?muscle=${m}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "X-Api-Key": "H+wwoPjTxZIaR+Bi2UrG+Q==Wv1jeUZLYy2lY6ym",
+        "X-Api-Key": import.meta.env.PUBLIC_APIKEY,
       },
     }).then((res) => res.json());
   }
