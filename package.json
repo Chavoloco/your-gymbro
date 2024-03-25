@@ -4,10 +4,10 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "copy .env.development .env && astro dev",
+    "start": "astro dev",
     "build": "astro check && astro build",
-    "build:dev": "copy .env.development .env && astro build",
-    "build:prod": "copy .env.production .env && astro build",
+    "build:dev": "cp .env.development .env && astro build",
+    "build:prod": "cp .env.production .env && astro build",
     "preview": "astro preview",
     "astro": "astro"
   },
