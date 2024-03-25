@@ -128,7 +128,7 @@ const { muscle } = Astro.props;
   }
 
   async function getResponse(m: string) {
-    return fetch(`${import.meta.env.PUBLIC_API_URL}?muscle=${m}`, {
+    return fetch(`https://api.api-ninjas.com/v1/exercises?muscle=${m}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
