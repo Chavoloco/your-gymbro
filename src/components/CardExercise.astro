@@ -1,0 +1,101 @@
+---
+interface Props {
+  name?: string;
+  difficulty?: string;
+  instructions?: string;
+  muscle?: string;
+  equipment?: string;
+  type?: string;
+}
+
+const { name, difficulty, instructions, muscle, equipment, type } = Astro.props;
+---
+
+<div class="container">
+  <li class="card">
+    <h1>{name}</h1>
+    <div class="details">
+      <div>
+        <h2>Difficulty</h2>
+        <p class="difficulty" id="difficulty">{difficulty}</p>
+      </div>
+      <div>
+        <h2>Information</h2>
+        <p class="paragraph">{instructions}</p>
+      </div>
+      <div>
+        <h2>Muscle Group</h2>
+        <p class="paragraph">{muscle}</p>
+      </div>
+      <div>
+        <h2>Equipment</h2>
+        <p class="paragraph">{equipment}</p>
+      </div>
+      <div>
+        <h2>Type</h2>
+        <p class="paragraph">{type}</p>
+      </div>
+    </div>
+  </li>
+</div>
+
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .card {
+    background-color: #23262d;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    padding: 20px;
+    width: 300px;
+    list-style: none;
+  }
+  .details {
+    display: flex;
+    flex-direction: column;
+  }
+  .details > div {
+    margin-bottom: 15px;
+  }
+  .difficulty {
+    font-size: larger;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+  .paragraph {
+    margin: 0;
+    text-align: center;
+    font-size: medium;
+  }
+  .diff-inter {
+    color: darkgoldenrod;
+  }
+  .diff-beg {
+    color: chartreuse;
+  }
+  .diff-advan {
+    color: crimson;
+  }
+</style>
+
+<script>
+  const ele = document.getElementById("difficulty");
+  if (ele?.textContent === "intermediate") {
+    ele.classList.add("diff-inter");
+  } else if (ele?.textContent === "beginner") {
+    ele.classList.add("diff-beg");
+  } else {
+    ele?.classList.add("diff-advan");
+  }
+</script>

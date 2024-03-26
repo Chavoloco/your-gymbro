@@ -79,65 +79,54 @@ const { muscle } = Astro.props;
 </div>
 
 <script>
-  async function callMuscleExercise(): Promise<void> {
-    const muscle = document.getElementById("muscle")?.textContent;
+  const muscle = document.getElementById("muscle")?.textContent;
+  import { EXERCISES } from "../consts/Exercise";
+  import type { Exercise } from "../types/Exercise";
 
-    if (!muscle) throw new Error("No muscle selected");
-
-    let promiseArray: Promise<any>[] = [];
-
+  function getExercises() {
     switch (muscle) {
       case "LEGS":
-        const legsMuscle = [
+        const legsMuscles = [
           "adductors",
           "calves",
           "quadriceps",
           "hamstrings",
           "glutes",
         ];
-        promiseArray = legsMuscle.map((m) =>
-          getResponse(m).then((response) => response.slice(0, 2))
-        );
+        const legsExercises = EXERCISES.filter((e) => {
+          return legsMuscles.includes(e.muscle);
+        });
+        renderExercises(legsExercises);
         break;
-
+      case "CHEST":
+        const chestExercises = EXERCISES.filter((a) => {
+          return a.muscle === "chest";
+        });
+        renderExercises(chestExercises);
+        break;
       case "BACK":
         const backMuscle = ["lats", "lower_back", "middle_back", "traps"];
-        promiseArray = backMuscle.map((m) =>
-          getResponse(m).then((response) => response.slice(0, 3))
-        );
+        const backExercises = EXERCISES.filter((e) => {
+          return backMuscle.includes(e.muscle);
+        });
+        renderExercises(backExercises);
         break;
-
       case "BICEPS":
         const bicepMuscle = ["biceps", "triceps", "forearms"];
-        promiseArray = bicepMuscle.map((m) =>
-          getResponse(m).then((response) => response.slice(0, 4))
-        );
+        const bicepExercises = EXERCISES.filter((e) => {
+          return bicepMuscle.includes(e.muscle);
+        });
+        renderExercises(bicepExercises);
         break;
-
       default:
-        promiseArray.push(getResponse(muscle));
         break;
     }
-    try {
-      const responses = await Promise.all(promiseArray);
-      const flattenedResponses = responses.flat();
-      renderExercises(flattenedResponses);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+
+    const backMuscle = ["lats", "lower_back", "middle_back", "traps"];
+    const bicepMuscle = ["biceps", "triceps", "forearms"];
   }
 
-  async function getResponse(m: string) {
-    return fetch(`https://api.api-ninjas.com/v1/exercises?muscle=${m}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Api-Key": import.meta.env.PUBLIC_APIKEY,
-      },
-    }).then((res) => res.json());
-  }
-
-  function renderExercises(exercises: { name: string }[]): void {
+  function renderExercises(exercises: Exercise[]): void {
     const exerciseList = document.getElementById("exerciseList");
 
     if (exerciseList) {
@@ -146,7 +135,13 @@ const { muscle } = Astro.props;
 
     exercises.forEach((e) => {
       const exerciseElement = document.createElement("li");
-      exerciseElement.textContent = e.name;
+      const exerciseLink = document.createElement("a");
+      exerciseLink.id = e.name;
+      exerciseLink.textContent = e.name;
+      exerciseLink.href = `/${e.url}`;
+      exerciseLink.style.textDecoration = "none";
+      exerciseLink.style.color = "inherit";
+
       exerciseElement.style.border = "1px solid #ddd";
       exerciseElement.style.borderRadius = "5px";
       exerciseElement.style.padding = "10px";
@@ -154,8 +149,10 @@ const { muscle } = Astro.props;
       exerciseElement.style.backgroundColor = "#f9f9f9";
       exerciseElement.style.boxShadow = "0 2px 4px rgba(0, 0, 0, 0.1)";
       exerciseElement.style.fontWeight = "bold";
+
+      exerciseElement?.appendChild(exerciseLink);
       exerciseList?.appendChild(exerciseElement);
     });
   }
-  document.body.onload = callMuscleExercise;
+  document.body.onload = getExercises;
 </script>

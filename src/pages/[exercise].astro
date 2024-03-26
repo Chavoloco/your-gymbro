@@ -1,0 +1,79 @@
+---
+import Layout from "../layouts/Layout.astro";
+import CardExercise from "../components/CardExercise.astro";
+import { EXERCISES } from "../consts/Exercise";
+
+export function getStaticPaths() {
+  return [
+    /**
+     * Chest Exercises
+     */
+    { params: { exercise: "dumbbell-bench-press" } },
+    { params: { exercise: "pushups" } },
+    { params: { exercise: "close-grip-bench-press" } },
+    { params: { exercise: "dumbbell-flyes" } },
+    { params: { exercise: "incline-dumbbell-bench-press" } },
+    { params: { exercise: "low-cable-cross-over" } },
+    { params: { exercise: "barbell-bench-press-medium-grip" } },
+    { params: { exercise: "chest-dip" } },
+    { params: { exercise: "decline-dumbbell-flyes" } },
+    { params: { exercise: "bodyweight-flyes" } },
+    /**
+     * Biceps Exercises
+     */
+    { params: { exercise: "incline-hammer-curls" } },
+    { params: { exercise: "wide-grip-barbell-curl" } },
+    { params: { exercise: "ez-bar-spider-curl" } },
+    { params: { exercise: "hammer-curls" } },
+    { params: { exercise: "triceps-dip" } },
+    { params: { exercise: "decline-ez-bar-skullcrusher" } },
+    { params: { exercise: "dumbbell-floor-press" } },
+    { params: { exercise: "cable-v-bar-push-down" } },
+    { params: { exercise: "rickshaw-carry" } },
+    { params: { exercise: "palms-down-wrist-curl-over-bench" } },
+    { params: { exercise: "straight-bar-wrist-roll-up" } },
+    { params: { exercise: "dumbbell-farmers-walk" } },
+    /**
+     * Back Exercises
+     */
+    { params: { exercise: "weighted-pull-up" } },
+    { params: { exercise: "pullups" } },
+    { params: { exercise: "rocky-pull-ups-pulldowns" } },
+    { params: { exercise: "atlas-stones" } },
+    { params: { exercise: "barbell-deficit-deadlift" } },
+    { params: { exercise: "back-extension" } },
+    { params: { exercise: "t-bar-row-with-handle" } },
+    { params: { exercise: "reverse-grip-bent-over-row" } },
+    { params: { exercise: "one-arm-dumbbell-row" } },
+    { params: { exercise: "smith-machine-shrug" } },
+    { params: { exercise: "leverage-Shrug" } },
+    { params: { exercise: "standing-dumbbell-shrug" } },
+    /**
+     * Legs Exercises
+     */
+    { params: { exercise: "thigh-adductor" } },
+    { params: { exercise: "groiners" } },
+    { params: { exercise: "smith-machine-calf-raise" } },
+    { params: { exercise: "standing-calf-raises" } },
+    { params: { exercise: "single-leg-press" } },
+    { params: { exercise: "clean-from-blocks" } },
+    { params: { exercise: "barbell-deadlift" } },
+    { params: { exercise: "romanian-deadlift-with-dumbbells" } },
+    { params: { exercise: "barbell-glute-bridge" } },
+    { params: { exercise: "barbell-hip-thrust" } },
+  ];
+}
+const { exercise } = Astro.params;
+
+const ex = EXERCISES.find((e) => e.url === exercise);
+---
+
+<Layout title={exercise} />
+<CardExercise
+  name={ex?.name}
+  difficulty={ex?.difficulty}
+  instructions={ex?.instructions}
+  muscle={ex?.muscle}
+  equipment={ex?.equipment}
+  type={ex?.type}
+/>
