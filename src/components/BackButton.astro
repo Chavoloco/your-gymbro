@@ -1,0 +1,35 @@
+---
+
+---
+
+<button class="hidden" id="goBackButton"><span>&Leftarrow;</span></button>
+
+<script>
+  function goBack() {
+    window.history.back();
+  }
+  if (window.location.href != import.meta.env.PUBLIC_BASE_URL + "/") {
+    document.getElementById("goBackButton")?.classList.remove("hidden");
+    document.getElementById("goBackButton")?.addEventListener("click", () => {
+      goBack();
+    });
+  }
+</script>
+
+<style>
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .hidden {
+    display: none;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
